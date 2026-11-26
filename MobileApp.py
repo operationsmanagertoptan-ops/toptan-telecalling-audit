@@ -11,13 +11,13 @@ import streamlit as st
 # 1. APP & PWA CONFIGURATION
 # ==========================================
 st.set_page_config(
-    page_title="Toptan Finistore — Operations & Audit App",
+    page_title="TF — Operations & Audit App",
     page_icon="📊",
     layout="wide",
     initial_sidebar_state="expanded",
 )
 
-# Supabase Configuration (Replace with your actual Project URL & Publishable/Anon Key)
+# Supabase Configuration
 SUPABASE_URL = "https://ujfviovuuchcwmsfshri.supabase.co"
 SUPABASE_ANON_KEY = "sb_publishable_RiErm9ZforRqNjFH91ZHKQ_tIO0EVKc"
 SUPABASE_TABLE = "telecalling_audit_records"
@@ -69,15 +69,15 @@ BRANCH_ALIASES = {
 # ==========================================
 def inject_pwa_and_styles():
     manifest_data = {
-        "name": "Toptan Finistore Audit App",
-        "short_name": "Toptan App",
+        "name": "TF",
+        "short_name": "TF",
         "start_url": "/",
         "display": "standalone",
         "background_color": "#0e1117",
         "theme_color": "#e59a24",
         "icons": [
             {
-                "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23e59a24'/%3E%3Ctext x='50' y='65' font-size='52' text-anchor='middle' fill='%23111' font-family='Arial'%3ETF%3C/text%3E%3C/svg%3E",
+                "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23e59a24'/%3E%3Ctext x='50' y='65' font-size='50' text-anchor='middle' fill='%23111' font-family='Arial'%3ETF%3C/text%3E%3C/svg%3E",
                 "sizes": "192x192",
                 "type": "image/svg+xml",
             }
@@ -91,7 +91,7 @@ def inject_pwa_and_styles():
         <meta name="theme-color" content="#e59a24">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-        <meta name="apple-mobile-web-app-title" content="Toptan App">
+        <meta name="apple-mobile-web-app-title" content="TF">
         <style>
             .stApp {{
                 background-color: #0e1117;
@@ -105,9 +105,9 @@ def inject_pwa_and_styles():
             }}
             .brand-title {{
                 color: #f5b041;
-                font-size: 1.45rem;
+                font-size: 1.5rem;
                 font-weight: 800;
-                letter-spacing: 0.4px;
+                letter-spacing: 0.6px;
                 margin: 0;
             }}
             .brand-sub {{
@@ -183,8 +183,8 @@ def render_login_screen():
     st.markdown(
         """
         <div class="brand-header">
-            <p class="brand-title">TOPTAN FINISTORE</p>
-            <p class="brand-sub">Telecalling, Salesman & Excel Audit System • Installable Web App</p>
+            <p class="brand-title">TF</p>
+            <p class="brand-sub">Telecalling, Salesman & Excel Audit System • Installable App</p>
         </div>
         """,
         unsafe_allow_html=True,
@@ -346,7 +346,6 @@ def detect_branch_with_typos(raw_value: str, fallback_branch: str = "Auto") -> s
     text = re.sub(r"[^a-zA-Z0-9\s]", " ", str(raw_value).lower())
     text = re.sub(r"\s+", " ", text).strip()
 
-    # 1. Exact / substring alias match (handles spelling mistakes & branch names)
     for canonical, aliases in BRANCH_ALIASES.items():
         if canonical.lower() in text:
             return canonical
@@ -354,7 +353,6 @@ def detect_branch_with_typos(raw_value: str, fallback_branch: str = "Auto") -> s
             if alias in text:
                 return canonical
 
-    # 2. Word-level fuzzy similarity match (handles typos like 'karuvarknd', 'ayikkarapdi', etc.)
     tokens = text.split()
     candidates = tokens + ([text] if len(text) <= 25 else [])
     best_branch = None
@@ -450,7 +448,7 @@ with h_col1:
     st.markdown(
         f"""
         <div class="brand-header" style="margin-bottom: 8px; padding: 12px 18px;">
-            <p class="brand-title" style="font-size: 1.25rem;">TOPTAN FINISTORE — AUDIT & REPORTS</p>
+            <p class="brand-title" style="font-size: 1.3rem;">TF — AUDIT & REPORTS</p>
             <p class="brand-sub">User: <b>{user_name}</b> • Role: <b>{st.session_state.auth_label}</b></p>
         </div>
         """,
@@ -503,7 +501,7 @@ with st.sidebar:
     )
 
     st.divider()
-    st.caption("📱 **Install as App:** Chrome / Safari മെനുവിൽ നിന്ന് **Add to Home Screen / Install App** ക്ലിക്ക് ചെയ്യുക.")
+    st.caption("📱 **Install TF App:** Chrome / Safari മെനുവിൽ നിന്ന് **Add to Home Screen / Install App** ക്ലിക്ക് ചെയ്യുക.")
     if not supabase_configured():
         st.warning("Supabase Key ചേർത്തിട്ടില്ല (Local session active).")
 
@@ -587,7 +585,6 @@ if page == "Excel Upload & Columns" and is_admin:
         except Exception as exc:
             st.error(f"ഫയൽ വായിക്കുന്നതിൽ പിശക്: {exc}")
 
-    # Manage columns on existing dataset
     if not df_all.empty:
         st.divider()
         st.subheader("നിലവിലുള്ള ഡാറ്റയിലെ Columns Delete ചെയ്യുക")
@@ -672,7 +669,7 @@ elif page == "Salesman & Excel Reports":
 
         st.dataframe(to_clean_display_df(rep_df), use_container_width=True)
         csv_bytes = to_clean_display_df(rep_df).to_csv(index=False).encode("utf-8-sig")
-        st.download_button("⬇️ Download Filtered Report (CSV)", data=csv_bytes, file_name="toptan_reports.csv", mime="text/csv")
+        st.download_button("⬇️ Download Filtered Report (CSV)", data=csv_bytes, file_name="tf_reports.csv", mime="text/csv")
 
 # ==========================================
 # PAGE 5: ALL CUSTOMER DATA
