@@ -19,7 +19,7 @@ st.set_page_config(
 
 # Supabase Configuration (Replace with your actual Project URL & Publishable/Anon Key)
 SUPABASE_URL = "https://ujfviovuuchcwmsfshri.supabase.co"
-SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY_HERE"
+SUPABASE_ANON_KEY = "sb_publishable_RiErm9ZforRqNjFH91ZHKQ_tIO0EVKc"
 SUPABASE_TABLE = "telecalling_audit_records"
 
 # Role Access Codes (ADMIN code is intentionally NOT displayed on UI)
