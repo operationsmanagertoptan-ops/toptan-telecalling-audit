@@ -30,7 +30,7 @@ def get_secret(key: str, default: str = "") -> str:
 # 1. SUPABASE & ACCESS CODE SETTINGS
 # ==========================================
 SUPABASE_URL = get_secret("SUPABASE_URL", "https://ujfviovuuchcwmsfshri.supabase.co")
-SUPABASE_ANON_KEY = get_secret("SUPABASE_ANON_KEY", "YOUR_SUPABASE_ANON_KEY_HERE")
+SUPABASE_ANON_KEY = get_secret("SUPABASE_ANON_KEY", "sb_publishable_RiErm9ZforRqNjFH91ZHKQ_tIO0EVKc")
 
 # നിങ്ങൾക്ക് ഷെയർ ചെയ്യാൻ കൊടുക്കാവുന്ന Access Codes (പിന്നീട് എളുപ്പത്തിൽ മാറ്റാം)
 ACCESS_CODES = {
